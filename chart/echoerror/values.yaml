@@ -9,4 +9,4 @@ server:
 
 client:
   port: 8080
-  delayMs: 1000
+  delayMs: 5000

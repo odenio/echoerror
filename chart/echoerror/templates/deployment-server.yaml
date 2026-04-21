@@ -3,16 +3,19 @@ kind: Deployment
 metadata:
   name: echoerror-server
   labels:
-    app: echoerror-server
+    app: echoerror
+    component: server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: echoerror-server
+      app: echoerror
+      compnent: server
   template:
     metadata:
       labels:
-        app: echoerror-server
+        app: echoerror
+        compnent: server
     spec:
       containers:
         - name: server

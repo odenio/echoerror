@@ -3,16 +3,19 @@ kind: Deployment
 metadata:
   name: echoerror-client
   labels:
-    app: echoerror-client
+    app: echoerror
+    component: client
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: echoerror-client
+      app: echoerror
+      component: client
   template:
     metadata:
       labels:
-        app: echoerror-client
+        app: echoerror
+        component: client
     spec:
       containers:
         - name: client
