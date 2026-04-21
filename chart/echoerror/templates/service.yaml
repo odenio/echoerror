@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: echoerror
+  labels:
+    app: echoerror-server
+spec:
+  selector:
+    app: echoerror-server
+  ports:
+    - name: unmeshed
+      port: {{ .Values.server.unmeshedPort }}
+      targetPort: unmeshed
+      protocol: TCP
+    - name: meshed
+      port: {{ .Values.server.meshedPort }}
+      targetPort: meshed
+      protocol: TCP

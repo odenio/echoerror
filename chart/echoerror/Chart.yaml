@@ -1,0 +1,5 @@
+apiVersion: v2
+name: echoerror
+description: Minimal gRPC echo-error service for testing linkerd error forwarding
+version: 0.1.0
+type: application

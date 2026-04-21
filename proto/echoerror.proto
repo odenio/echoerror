@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package echoerror;
+
+option go_package = "github.com/example/echoerror/proto";
+
+service EchoError {
+  rpc Echo(EchoRequest) returns (EchoResponse);
+}
+
+message EchoRequest {
+  int32 code = 1;
+  string message = 2;
+}
+
+message EchoResponse {}

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoerror-client
+  labels:
+    app: echoerror-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoerror-client
+  template:
+    metadata:
+      labels:
+        app: echoerror-client
+    spec:
+      containers:
+        - name: client
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/client"]
+          env:
+            - name: ECHOERROR_HOST
+              value: echoerror
+            - name: ECHOERROR_PORT
+              value: {{ .Values.client.port | quote }}
+            - name: ECHOERROR_DELAY_MS
+              value: {{ .Values.client.delayMs | quote }}

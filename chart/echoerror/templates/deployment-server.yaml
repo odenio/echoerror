@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoerror-server
+  labels:
+    app: echoerror-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoerror-server
+  template:
+    metadata:
+      labels:
+        app: echoerror-server
+    spec:
+      containers:
+        - name: server
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/server"]
+          env:
+            - name: UNMESHED_LISTEN_PORT
+              value: {{ .Values.server.unmeshedPort | quote }}
+            - name: MESHED_LISTEN_PORT
+              value: {{ .Values.server.meshedPort | quote }}
+          ports:
+            - name: unmeshed
+              containerPort: {{ .Values.server.unmeshedPort }}
+              protocol: TCP
+            - name: meshed
+              containerPort: {{ .Values.server.meshedPort }}
+              protocol: TCP

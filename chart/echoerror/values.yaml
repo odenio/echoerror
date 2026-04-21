@@ -1,0 +1,12 @@
+image:
+  repository: odentech/echoerror
+  tag: latest
+  pullPolicy: Always
+
+server:
+  unmeshedPort: 9000
+  meshedPort: 8080
+
+client:
+  port: 8080
+  delayMs: 1000
