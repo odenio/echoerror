@@ -25,7 +25,7 @@ func main() {
 	log.Printf("configured host: %s", host)
 	port := os.Getenv("ECHOERROR_PORT")
 	if port == "" {
-		port = "8080"
+		port = "9090"
 	}
 	log.Printf("configured port: %s", port)
 	delayMs := 1000

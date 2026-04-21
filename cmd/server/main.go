@@ -48,7 +48,7 @@ func serve(port, label string) {
 
 func main() {
 	unmeshedPort := envOrDefault("UNMESHED_LISTEN_PORT", "9000")
-	meshedPort := envOrDefault("MESHED_LISTEN_PORT", "8080")
+	meshedPort := envOrDefault("MESHED_LISTEN_PORT", "9090")
 
 	go serve(unmeshedPort, "unmeshed")
 	serve(meshedPort, "meshed")

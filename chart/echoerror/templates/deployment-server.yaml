@@ -10,12 +10,12 @@ spec:
   selector:
     matchLabels:
       app: echoerror
-      compnent: server
+      component: server
   template:
     metadata:
       labels:
         app: echoerror
-        compnent: server
+        component: server
     spec:
       containers:
         - name: server

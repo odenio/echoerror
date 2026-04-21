@@ -5,8 +5,8 @@ image:
 
 server:
   unmeshedPort: 9000
-  meshedPort: 8080
+  meshedPort: 9090
 
 client:
-  port: 8080
+  port: 9090
   delayMs: 5000
