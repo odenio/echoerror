@@ -25,7 +25,7 @@ func main() {
 	log.Printf("configured host: %s", host)
 	port := os.Getenv("ECHOERROR_PORT")
 	if port == "" {
-		port = "50051"
+		port = "8080"
 	}
 	log.Printf("configured port: %s", port)
 	delayMs := 1000
@@ -34,7 +34,7 @@ func main() {
 			delayMs = d
 		}
 	}
-	log.Printf("Configured delay: %s", delayMs)
+	log.Printf("Configured delay: %d", delayMs)
 
 	target := fmt.Sprintf("%s:%s", host, port)
 
