@@ -12,6 +12,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
@@ -52,13 +53,21 @@ func main() {
 			msg := fmt.Sprintf("test error code %d at %s", code, time.Now().Format(time.RFC3339Nano))
 
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			var trailer metadata.MD
 			_, err := client.Echo(ctx, &pb.EchoRequest{
 				Code:    int32(code),
 				Message: msg,
-			})
+			}, grpc.Trailer(&trailer))
 			cancel()
 
 			sentCode := codes.Code(code)
+
+			// Check the echoed message trailer regardless of status code
+			if vals := trailer.Get("x-echo-message"); len(vals) == 0 {
+				log.Printf("MISMATCH TRAILER: no x-echo-message trailer received for code=%d", code)
+			} else if vals[0] != msg {
+				log.Printf("MISMATCH TRAILER: sent=%q got=%q code=%d", msg, vals[0], code)
+			}
 
 			if sentCode == codes.OK {
 				if err != nil {

@@ -10,6 +10,7 @@ import (
 	pb "github.com/example/echoerror/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
@@ -17,7 +18,9 @@ type server struct {
 	pb.UnimplementedEchoErrorServer
 }
 
-func (s *server) Echo(_ context.Context, req *pb.EchoRequest) (*pb.EchoResponse, error) {
+func (s *server) Echo(ctx context.Context, req *pb.EchoRequest) (*pb.EchoResponse, error) {
+	grpc.SetTrailer(ctx, metadata.Pairs("x-echo-message", req.Message))
+
 	code := codes.Code(req.Code)
 	if code == codes.OK {
 		return &pb.EchoResponse{}, nil
