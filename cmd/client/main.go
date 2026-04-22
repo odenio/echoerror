@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"os"
@@ -36,6 +37,13 @@ func main() {
 		}
 	}
 	log.Printf("Configured delay: %d", delayMs)
+	padMessageKb := 64
+	if v := os.Getenv("ECHOERROR_PAD_MESSAGE_KB"); v != "" {
+		if d, err := strconv.Atoi(v); err == nil {
+			padMessageKb = d
+		}
+	}
+	log.Printf("Configured pad_message_kb: %d", padMessageKb)
 
 	target := fmt.Sprintf("%s:%s", host, port)
 
@@ -55,8 +63,9 @@ func main() {
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			var trailer metadata.MD
 			_, err := client.Echo(ctx, &pb.EchoRequest{
-				Code:    int32(code),
-				Message: msg,
+				Code:         int32(code),
+				Message:      msg,
+				PadMessageKb: int32(padMessageKb),
 			}, grpc.Trailer(&trailer))
 			cancel()
 
@@ -67,6 +76,21 @@ func main() {
 				log.Printf("MISMATCH TRAILER: no x-echo-message trailer received for code=%d", code)
 			} else if vals[0] != msg {
 				log.Printf("MISMATCH TRAILER: sent=%q got=%q code=%d", msg, vals[0], code)
+			}
+
+			// Check the padding trailer
+			if padMessageKb > 0 {
+				if vals := trailer.Get("x-echo-pad"); len(vals) == 0 {
+					log.Printf("MISMATCH PAD: no x-echo-pad trailer received for code=%d", code)
+				} else {
+					decoded, decErr := base64.StdEncoding.DecodeString(vals[0])
+					if decErr != nil {
+						log.Printf("MISMATCH PAD: failed to decode x-echo-pad: %v", decErr)
+					} else if len(decoded) != padMessageKb*1024 {
+						log.Printf("MISMATCH PAD: expected %d bytes, got %d bytes, code=%d",
+							padMessageKb*1024, len(decoded), code)
+					}
+				}
 			}
 
 			if sentCode == codes.OK {

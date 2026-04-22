@@ -25,6 +25,7 @@ type EchoRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Code          int32                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
 	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	PadMessageKb  int32                  `protobuf:"varint,3,opt,name=pad_message_kb,json=padMessageKb,proto3" json:"pad_message_kb,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -73,6 +74,13 @@ func (x *EchoRequest) GetMessage() string {
 	return ""
 }
 
+func (x *EchoRequest) GetPadMessageKb() int32 {
+	if x != nil {
+		return x.PadMessageKb
+	}
+	return 0
+}
+
 type EchoResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -113,10 +121,11 @@ var File_proto_echoerror_proto protoreflect.FileDescriptor
 
 const file_proto_echoerror_proto_rawDesc = "" +
 	"\n" +
-	"\x15proto/echoerror.proto\x12\techoerror\";\n" +
+	"\x15proto/echoerror.proto\x12\techoerror\"a\n" +
 	"\vEchoRequest\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\x0e\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12$\n" +
+	"\x0epad_message_kb\x18\x03 \x01(\x05R\fpadMessageKb\"\x0e\n" +
 	"\fEchoResponse2D\n" +
 	"\tEchoError\x127\n" +
 	"\x04Echo\x12\x16.echoerror.EchoRequest\x1a\x17.echoerror.EchoResponseB$Z\"github.com/example/echoerror/protob\x06proto3"

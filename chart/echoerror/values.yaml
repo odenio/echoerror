@@ -10,3 +10,4 @@ server:
 client:
   port: 9090
   delayMs: 5000
+  padMessageKb: 64

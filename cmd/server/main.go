@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"net"
@@ -20,6 +22,12 @@ type server struct {
 
 func (s *server) Echo(ctx context.Context, req *pb.EchoRequest) (*pb.EchoResponse, error) {
 	grpc.SetTrailer(ctx, metadata.Pairs("x-echo-message", req.Message))
+
+	if req.PadMessageKb > 0 {
+		pad := make([]byte, int(req.PadMessageKb)*1024)
+		rand.Read(pad)
+		grpc.SetTrailer(ctx, metadata.Pairs("x-echo-pad", base64.StdEncoding.EncodeToString(pad)))
+	}
 
 	code := codes.Code(req.Code)
 	if code == codes.OK {

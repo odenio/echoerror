@@ -29,3 +29,5 @@ spec:
               value: {{ .Values.client.port | quote }}
             - name: ECHOERROR_DELAY_MS
               value: {{ .Values.client.delayMs | quote }}
+            - name: ECHOERROR_PAD_MESSAGE_KB
+              value: {{ .Values.client.padMessageKb | quote }}

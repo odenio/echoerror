@@ -11,6 +11,7 @@ service EchoError {
 message EchoRequest {
   int32 code = 1;
   string message = 2;
+  int32 pad_message_kb = 3;
 }
 
 message EchoResponse {}
